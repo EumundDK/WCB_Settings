@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/scanLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/tap_tag3"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/uidLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <TableLayout
+            android:id="@+id/tagSetting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/uidLayout"
+            android:stretchColumns="3">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/currentSettingText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Current Setting"
+                    android:textSize="20sp"
+                    android:layout_column="1"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=":"
+                    android:textSize="20sp"
+                    android:layout_column="2"/>
+
+                <EditText
+                    android:id="@+id/currentSettingEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:layout_column="3"
+                    android:inputType="numberDecimal"
+                    android:drawableEnd="@drawable/ic_baseline_warning_amber_red_24"
+                    android:hint="1.0~40.0"/>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tagIdText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tag ID"
+                    android:textSize="20sp"
+                    android:layout_column="1"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=":"
+                    android:textSize="20sp"
+                    android:layout_column="2"/>
+
+                <EditText
+                    android:id="@+id/tagIdEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:layout_column="3"
+                    android:inputType="numberDecimal"
+                    android:drawableEnd="@drawable/ic_baseline_warning_amber_red_24"
+                    android:hint="1~100"/>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/cutOffPeriodText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:text="Cut-off Period"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="2"
+                    android:text=":"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/cutOffPeriodEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_column="3"
+                    android:hint="20~300"
+                    android:inputType="numberDecimal"
+                    android:drawableEnd="@drawable/ic_baseline_warning_amber_red_24"
+                    android:textSize="20sp"/>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/onOffSettingText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="On/Off Setting"
+                    android:textSize="20sp"
+                    android:layout_column="1"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=":"
+                    android:textSize="20sp"
+                    android:layout_column="2"/>
+
+                <Switch
+                    android:id="@+id/onOffSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:textOn="1"
+                    android:textOff="0"
+                    android:showText="true"
+                    android:drawableEnd="@drawable/ic_baseline_warning_amber_red_24"
+                    android:layout_column="3"/>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/autoReconnectText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Auto-Reconnect"
+                    android:textSize="20sp"
+                    android:layout_column="1"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=":"
+                    android:textSize="20sp"
+                    android:layout_column="2"/>
+
+                <Switch
+                    android:id="@+id/autoReconnectSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:textOn="1"
+                    android:textOff="0"
+                    android:showText="true"
+                    android:drawableEnd="@drawable/ic_baseline_warning_amber_red_24"
+                    android:layout_column="3"/>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/ownerNameText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Owner"
+                    android:textSize="20sp"
+                    android:layout_column="1"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=":"
+                    android:textSize="20sp"
+                    android:layout_column="2"/>
+
+                <EditText
+                    android:id="@+id/ownerNameEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:inputType="text"
+                    android:maxLength="16"
+                    android:hint="MySTAR"
+                    android:drawableEnd="@drawable/ic_baseline_warning_amber_red_24"
+                    android:layout_column="3"/>
+
+            </TableRow>
+        </TableLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tagSetting"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/readMemoryBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/grey"
+                android:text="READ"/>
+
+            <Button
+                android:id="@+id/writeMemoryBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/grey"
+                android:text="WRITE" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
