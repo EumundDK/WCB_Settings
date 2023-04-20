@@ -7,8 +7,8 @@ public class MyNFCTag {
     static final int CURRENT_SETTING = 0;
     static final int TAG_ID = 2;
     static final int CUTOFF_PERIOD = 4;
-    static final int ONOFF_SETTING = 6;
-    static final int AUTO_RECONNECT = 7;
+    static final int AUTO_ONOFF_SETTING = 6;
+    static final int RANDOM_START = 7;
     static final int OWNER_NAME = 8;
 
     static final int DATA_START = 0;
@@ -20,8 +20,10 @@ public class MyNFCTag {
     int currentSetting;
     int tagId;
     int cutOffPeriod;
+    int autoOnOffSetting;
     int onOffSetting;
     int autoReconnect;
+    int randomStart;
     String ownerName;
 
     private static final MyNFCTag myNfcTag = new MyNFCTag();
@@ -74,6 +76,14 @@ public class MyNFCTag {
         this.autoReconnect = autoReconnect;
     }
 
+    public int getRandomStart() {
+        return randomStart;
+    }
+
+    public void setRandomStart(int randomStart) {
+        this.randomStart = randomStart;
+    }
+
     public String getOwnerName() {
         return ownerName;
     }
@@ -94,8 +104,10 @@ public class MyNFCTag {
         currentSetting = ((rawData[CURRENT_SETTING] & 0xFF) + ((rawData[CURRENT_SETTING+1] & 0xFF) * 256));
         tagId = (rawData[TAG_ID] & 0xFF) + ((rawData[TAG_ID+1] & 0xFF) * 256);
         cutOffPeriod = (rawData[CUTOFF_PERIOD] & 0xFF) + ((rawData[CUTOFF_PERIOD+1] & 0xFF) * 256);
-        onOffSetting = (rawData[ONOFF_SETTING] & 0xFF);
-        autoReconnect = (rawData[AUTO_RECONNECT] & 0xFF);
+        autoOnOffSetting = (rawData[AUTO_ONOFF_SETTING] & 0xFF);
+        onOffSetting = (rawData[AUTO_ONOFF_SETTING] & 0x01);
+        autoReconnect = (rawData[AUTO_ONOFF_SETTING] & 0x02);
+        randomStart = (rawData[RANDOM_START] & 0xFF);
         System.arraycopy(ownerNameRaw, 0, rawData, OWNER_NAME, ownerNameRaw.length);
         ownerName = new String(ownerNameRaw, StandardCharsets.UTF_8);
     }
@@ -118,9 +130,11 @@ public class MyNFCTag {
             rawData[CUTOFF_PERIOD] = (byte) (cutOffPeriod % 256);
             rawData[CUTOFF_PERIOD + 1] = (byte) (cutOffPeriod / 256);
         }
-        rawData[ONOFF_SETTING] = (byte) onOffSetting;
-        rawData[AUTO_RECONNECT] = (byte) autoReconnect;
+        rawData[AUTO_ONOFF_SETTING] = (byte) (onOffSetting + autoReconnect);
+        rawData[RANDOM_START] = (byte) randomStart;
         System.arraycopy(ownerNameRaw, 0, rawData, OWNER_NAME, ownerNameRaw.length);
+
+
 
         return rawData;
     }

@@ -9,14 +9,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible"
+        android:visibility="invisible"
         android:gravity="center">
 
         <ImageView
             android:id="@+id/scanLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/tap_tag3"/>
+            android:src="@drawable/tap_tag3" />
 
     </LinearLayout>
 
@@ -60,8 +60,16 @@
                     android:textSize="20sp"
                     android:layout_column="3"
                     android:inputType="numberDecimal"
-                    android:drawableEnd="@drawable/ic_baseline_warning_amber_red_24"
                     android:hint="1.0~40.0"/>
+
+                <ImageView
+                    android:id="@+id/currentSettingWarning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_warning_amber_red_24"
+                    android:layout_gravity="center"
+                    android:layout_column="4"
+                    android:visibility="invisible"/>
 
             </TableRow>
 
@@ -91,8 +99,16 @@
                     android:textSize="20sp"
                     android:layout_column="3"
                     android:inputType="numberDecimal"
-                    android:drawableEnd="@drawable/ic_baseline_warning_amber_red_24"
                     android:hint="1~100"/>
+
+                <ImageView
+                    android:id="@+id/tagIdWarning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_warning_amber_red_24"
+                    android:layout_gravity="center"
+                    android:layout_column="4"
+                    android:visibility="invisible"/>
 
             </TableRow>
 
@@ -122,8 +138,16 @@
                     android:layout_column="3"
                     android:hint="20~300"
                     android:inputType="numberDecimal"
-                    android:drawableEnd="@drawable/ic_baseline_warning_amber_red_24"
                     android:textSize="20sp"/>
+
+                <ImageView
+                    android:id="@+id/cutOffPeriodWarning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_warning_amber_red_24"
+                    android:layout_gravity="center"
+                    android:layout_column="4"
+                    android:visibility="invisible"/>
 
             </TableRow>
 
@@ -154,7 +178,6 @@
                     android:textOn="1"
                     android:textOff="0"
                     android:showText="true"
-                    android:drawableEnd="@drawable/ic_baseline_warning_amber_red_24"
                     android:layout_column="3"/>
 
             </TableRow>
@@ -186,7 +209,37 @@
                     android:textOn="1"
                     android:textOff="0"
                     android:showText="true"
-                    android:drawableEnd="@drawable/ic_baseline_warning_amber_red_24"
+                    android:layout_column="3"/>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/randomStartText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Random Start"
+                    android:textSize="20sp"
+                    android:layout_column="1"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=":"
+                    android:textSize="20sp"
+                    android:layout_column="2"/>
+
+                <Switch
+                    android:id="@+id/randomStartSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:textOn="1"
+                    android:textOff="0"
+                    android:showText="true"
                     android:layout_column="3"/>
 
             </TableRow>
@@ -218,7 +271,6 @@
                     android:inputType="text"
                     android:maxLength="16"
                     android:hint="MySTAR"
-                    android:drawableEnd="@drawable/ic_baseline_warning_amber_red_24"
                     android:layout_column="3"/>
 
             </TableRow>

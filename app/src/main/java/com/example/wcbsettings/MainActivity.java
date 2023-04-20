@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,10 +39,14 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
     private MyNFCTag mMyNFCTag;
 
     private EditText mCurrentSettingEdit;
+    private ImageView mCurrentSettingWarning;
     private EditText mTagIdEdit;
+    private ImageView mTagIdWarning;
     private EditText mCutoffPeriodEdit;
+    private ImageView mCutoffPeriodWarning;
     private Switch mOnOffSettingSwitch;
     private Switch mAutoReconnectSwitch;
+    private Switch mRandomStartSwitch;
     private EditText mOwnerNameEdit;
     private Button mReadMemoryBtn;
     private Button mWriteMemoryBtn;
@@ -49,6 +55,10 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
 
     private View uidLayout;
     private View scanLayout;
+
+    private String currentSettingTemp;
+    private String tagIdTemp;
+    private String cutOffPeriodTemp;
 
     static final int RF_CONFIG_PASSWORD = 0;
     static final int EH_MODE = 2;
@@ -79,8 +89,53 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
         scanLayout = findViewById(R.id.scanLayout);
 
         mCurrentSettingEdit = (EditText) findViewById(R.id.currentSettingEdit);
+        mCurrentSettingWarning = findViewById(R.id.currentSettingWarning);
+        mCurrentSettingEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(b) {
+                    currentSettingTemp = mCurrentSettingEdit.getText().toString();
+                    mCurrentSettingEdit.getText().clear();
+                } else {
+                    if(TextUtils.isEmpty(mCurrentSettingEdit.getText().toString())) {
+                        mCurrentSettingEdit.setText(currentSettingTemp);
+                    }
+                    currentSettingTemp = mCurrentSettingEdit.getText().toString();
+                }
+            }
+        });
         mTagIdEdit = (EditText) findViewById(R.id.tagIdEdit);
+        mTagIdEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(b) {
+                    tagIdTemp = mTagIdEdit.getText().toString();
+                    mTagIdEdit.getText().clear();
+                } else {
+                    if(TextUtils.isEmpty(mTagIdEdit.getText().toString())) {
+                        mTagIdEdit.setText(tagIdTemp);
+                    }
+                    tagIdTemp = mTagIdEdit.getText().toString();
+                }
+            }
+        });
+        mTagIdWarning = findViewById(R.id.tagIdWarning);
         mCutoffPeriodEdit = (EditText) findViewById(R.id.cutOffPeriodEdit);
+        mCutoffPeriodWarning = findViewById(R.id.cutOffPeriodWarning);
+        mCutoffPeriodEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(b) {
+                    cutOffPeriodTemp = mCutoffPeriodEdit.getText().toString();
+                    mCutoffPeriodEdit.getText().clear();
+                } else {
+                    if(TextUtils.isEmpty(mCutoffPeriodEdit.getText().toString())) {
+                        mCutoffPeriodEdit.setText(cutOffPeriodTemp);
+                    }
+                    cutOffPeriodTemp = mCutoffPeriodEdit.getText().toString();
+                }
+            }
+        });
         mOnOffSettingSwitch = (Switch) findViewById(R.id.onOffSwitch);
         mOnOffSettingSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -98,9 +153,21 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b) {
-                    mMyNFCTag.setAutoReconnect(1);
+                    mMyNFCTag.setAutoReconnect(2);
                 } else {
                     mMyNFCTag.setAutoReconnect(0);
+                }
+            }
+        });
+
+        mRandomStartSwitch = (Switch) findViewById(R.id.randomStartSwitch);
+        mRandomStartSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b) {
+                    mMyNFCTag.setRandomStart(1);
+                } else {
+                    mMyNFCTag.setRandomStart(0);
                 }
             }
         });
@@ -109,20 +176,26 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
         mReadMemoryBtn = findViewById(R.id.readMemoryBtn);
         mReadMemoryBtn.setOnClickListener(view ->  {
             if(mNfcTag != null) {
+                clearErrorAlert();
                 executeAsynchronousAction(Action.READ_TAG_MEMORY);
             } else {
                 buttonStatus(false);
-                Toast.makeText(this, "Action failed!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Action failed!", Toast.LENGTH_SHORT).show();
             }
         });
 
         mWriteMemoryBtn = findViewById(R.id.writeMemoryBtn);
         mWriteMemoryBtn.setOnClickListener(view ->  {
             if(mNfcTag != null) {
-                executeAsynchronousAction(Action.WRITE_TAG_MEMORY);
+                checkEditTextEmpty();
+                if(mCurrentSettingEdit.length() == 0 || mTagIdEdit.length() == 0 || mCutoffPeriodEdit.length() == 0) {
+                    Toast.makeText(MainActivity.this, "There are empty fields", Toast.LENGTH_SHORT).show();
+                } else {
+                    executeAsynchronousAction(Action.WRITE_TAG_MEMORY);
+                }
             } else {
                 buttonStatus(false);
-                Toast.makeText(this, "Action failed!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Action failed!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -173,9 +246,7 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
         // Check what was the reason which triggered the resume of current application
         Intent intent = getIntent();
         String action = intent.getAction();
-        if (action.equals(NfcAdapter.ACTION_NDEF_DISCOVERED) ||
-                action.equals(NfcAdapter.ACTION_TECH_DISCOVERED) ||
-                action.equals(NfcAdapter.ACTION_TAG_DISCOVERED)) {
+        if (action.equals(NfcAdapter.ACTION_NDEF_DISCOVERED) || action.equals(NfcAdapter.ACTION_TECH_DISCOVERED) || action.equals(NfcAdapter.ACTION_TAG_DISCOVERED)) {
             // If the resume was triggered by an NFC event, it will contain an EXTRA_TAG providing
             // the handle of the NFC Tag
             Tag androidTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
@@ -203,6 +274,9 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
                 detailsIntent.setAction(Intent.ACTION_DEFAULT);
                 startActivity(detailsIntent);
                 return true;
+            case R.id.menu_ehEnable:
+                executeAsynchronousAction(Action.ENABLE_EH);
+                return true;
             case android.R.id.home:
                 uidLayout.setVisibility(View.GONE);
                 scanLayout.setVisibility(View.VISIBLE);
@@ -222,7 +296,7 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
     public void onTagDiscoveryCompleted(NFCTag nfcTag, TagHelper.ProductID productId, STException error) {
         if (error != null) {
             buttonStatus(false);
-            Toast.makeText(getApplication(), "Error while reading the tag: " + error.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplication(), "Error while reading the tag: " + error.toString(), Toast.LENGTH_SHORT).show();
             return;
         }
         if (nfcTag != null) {
@@ -233,15 +307,16 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
                 uidLayout.setVisibility(View.VISIBLE);
                 scanLayout.setVisibility(View.GONE);
                 executeAsynchronousAction(Action.ENABLE_EH);
+                executeAsynchronousAction(Action.READ_TAG_MEMORY);
                 buttonStatus(true);
             } catch (STException e) {
                 e.printStackTrace();
                 buttonStatus(false);
-                Toast.makeText(this, "Discovery successful but failed to read the tag!", Toast.LENGTH_LONG).show();
+//                Toast.makeText(this, "Discovery successful but failed to read the tag!", Toast.LENGTH_SHORT).show();
             }
         } else {
             buttonStatus(false);
-            Toast.makeText(this, "Tag discovery failed!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Tag discovery failed!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -317,7 +392,7 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
                 case ACTION_SUCCESSFUL:
                     switch (mAction) {
                         case ENABLE_EH:
-                            Toast.makeText(MainActivity.this, "EH Mode Enabled", Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, "EH Mode Enabled", Toast.LENGTH_SHORT).show();
                             break;
                         case READ_TAG_MEMORY:
                             data = mMyNFCTag.getRawData();
@@ -326,27 +401,26 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
                             mCutoffPeriodEdit.setText(String.valueOf(mMyNFCTag.getCutOffPeriod()));
                             onOffStatus(mMyNFCTag.getOnOffSetting());
                             autoReconnectStatus(mMyNFCTag.getAutoReconnect());
-                            if(data[MyNFCTag.OWNER_NAME] == 0) {
-                                mOwnerNameEdit.getText().clear();
-                            } else {
+                            mOwnerNameEdit.getText().clear();
+                            if(data[MyNFCTag.OWNER_NAME] != 0) {
                                 mOwnerNameEdit.setText(mMyNFCTag.getOwnerName());
                             }
-                            Toast.makeText(MainActivity.this, "Read successful", Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, "Read successful", Toast.LENGTH_SHORT).show();
                             break;
                         case WRITE_TAG_MEMORY:
-                            Toast.makeText(MainActivity.this, "Write successful", Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, "Write successful", Toast.LENGTH_SHORT).show();
                             break;
                     }
                     break;
 
                 case ACTION_FAILED:
                     buttonStatus(false);
-                    Toast.makeText(MainActivity.this, "Action failed!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "Action failed!", Toast.LENGTH_SHORT).show();
                     break;
 
                 case TAG_NOT_IN_THE_FIELD:
                     buttonStatus(false);
-                    Toast.makeText(MainActivity.this, "Tag not in the field!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "Tag not in the field!", Toast.LENGTH_SHORT).show();
                     break;
             }
 
@@ -381,7 +455,7 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
     }
 
     private void autoReconnectStatus(int status) {
-        if(status == 1) {
+        if(status == 2) {
             mAutoReconnectSwitch.setChecked(true);
         } else {
             mAutoReconnectSwitch.setChecked(false);
@@ -406,14 +480,29 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
 
     public void checkEditTextEmpty() {
         if(mCurrentSettingEdit.length() == 0) {
-
+            mCurrentSettingWarning.setVisibility(View.VISIBLE);
+        } else {
+            mCurrentSettingWarning.setVisibility(View.INVISIBLE);
+            mMyNFCTag.setCurrentDouble(Double.parseDouble(mCurrentSettingEdit.getText().toString()));
         }
         if(mTagIdEdit.length() == 0) {
-
+            mTagIdWarning.setVisibility(View.VISIBLE);
+        } else {
+            mTagIdWarning.setVisibility(View.INVISIBLE);
+            mMyNFCTag.setTagId(Integer.parseInt(mTagIdEdit.getText().toString()));
         }
         if(mCutoffPeriodEdit.length() == 0) {
-
+            mCutoffPeriodWarning.setVisibility(View.VISIBLE);
+        } else {
+            mCutoffPeriodWarning.setVisibility(View.INVISIBLE);
+            mMyNFCTag.setCutOffPeriod(Integer.parseInt(mCutoffPeriodEdit.getText().toString()));
         }
+    }
+
+    public void clearErrorAlert() {
+        mCurrentSettingWarning.setVisibility(View.INVISIBLE);
+        mTagIdWarning.setVisibility(View.INVISIBLE);
+        mCutoffPeriodWarning.setVisibility(View.INVISIBLE);
     }
 
 }
