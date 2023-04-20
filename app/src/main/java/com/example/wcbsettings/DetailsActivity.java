@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.text.InputFilter;
@@ -143,11 +144,11 @@ public class DetailsActivity extends AppCompatActivity implements TagDiscovery.o
             //Toast.makeText(this, "We are ready to play with NFC!", Toast.LENGTH_SHORT).show();
             // Give priority to the current activity when receiving NFC events (over other actvities)
             PendingIntent pendingIntent;
-//            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0 | PendingIntent.FLAG_IMMUTABLE);
-//            } else {
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0 | PendingIntent.FLAG_MUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+            } else {
                 pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-//            }
+            }
             IntentFilter[] nfcFilters = null;
             String[][] nfcTechLists = null;
             mNfcAdapter.enableForegroundDispatch(this, pendingIntent, nfcFilters, nfcTechLists);
@@ -212,6 +213,7 @@ public class DetailsActivity extends AppCompatActivity implements TagDiscovery.o
             mST25DVTag = (ST25DVTag) mNfcTag;
             try {
                 String uidString = nfcTag.getUidString();
+                executeAsynchronousAction(Action.READ_TAG_MEMORY);
                 buttonStatus(true);
             } catch (STException e) {
                 e.printStackTrace();
