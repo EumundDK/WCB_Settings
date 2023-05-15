@@ -63,6 +63,9 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
     static final int RF_CONFIG_PASSWORD = 0;
     static final int EH_MODE = 2;
 
+    public void exitApp(View view) { finish();
+    }
+
     enum Action {
         ENABLE_EH,
         READ_TAG_MEMORY,
