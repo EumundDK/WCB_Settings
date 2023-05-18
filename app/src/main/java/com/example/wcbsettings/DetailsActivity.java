@@ -365,10 +365,10 @@ public class DetailsActivity extends AppCompatActivity implements TagDiscovery.o
     private void buttonStatus(boolean status) {
         if(status) {
             mReadMemoryBtn.setClickable(status);
-            mReadMemoryBtn.setBackgroundTintList(getColorStateList(R.color.button_color_state_enable));
+            mReadMemoryBtn.setBackgroundTintList(getColorStateList(R.color.dark_blue));
             mReadMemoryBtn.setTextColor(getResources().getColor(R.color.white));
             mWriteMemoryBtn.setClickable(status);
-            mWriteMemoryBtn.setBackgroundTintList(getColorStateList(R.color.button_color_state_enable));
+            mWriteMemoryBtn.setBackgroundTintList(getColorStateList(R.color.dark_blue));
             mWriteMemoryBtn.setTextColor(getResources().getColor(R.color.white));
         } else {
             mReadMemoryBtn.setClickable(status);
