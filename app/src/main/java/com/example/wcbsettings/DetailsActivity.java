@@ -14,6 +14,7 @@ import android.text.InputFilter;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -64,6 +65,9 @@ public class DetailsActivity extends AppCompatActivity implements TagDiscovery.o
     byte[] distributorNameByte = new byte[16];
 
     private byte[] mPassword = {0,0,0,0,0,0,0,0};
+
+    public void exitApp(View view) { finish();
+    }
 
 
     enum Action {
@@ -361,10 +365,10 @@ public class DetailsActivity extends AppCompatActivity implements TagDiscovery.o
     private void buttonStatus(boolean status) {
         if(status) {
             mReadMemoryBtn.setClickable(status);
-            mReadMemoryBtn.setBackgroundTintList(getColorStateList(R.color.button_color_state_enable));
+            mReadMemoryBtn.setBackgroundTintList(getColorStateList(R.color.dark_blue));
             mReadMemoryBtn.setTextColor(getResources().getColor(R.color.white));
             mWriteMemoryBtn.setClickable(status);
-            mWriteMemoryBtn.setBackgroundTintList(getColorStateList(R.color.button_color_state_enable));
+            mWriteMemoryBtn.setBackgroundTintList(getColorStateList(R.color.dark_blue));
             mWriteMemoryBtn.setTextColor(getResources().getColor(R.color.white));
         } else {
             mReadMemoryBtn.setClickable(status);

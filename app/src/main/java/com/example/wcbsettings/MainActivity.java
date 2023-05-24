@@ -59,9 +59,13 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
     private String currentSettingTemp;
     private String tagIdTemp;
     private String cutOffPeriodTemp;
+    private String ownerTemp;
 
     static final int RF_CONFIG_PASSWORD = 0;
     static final int EH_MODE = 2;
+
+    public void exitApp(View view) { finish();
+    }
 
     enum Action {
         ENABLE_EH,
@@ -173,6 +177,21 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
         });
 
         mOwnerNameEdit = (EditText) findViewById(R.id.ownerNameEdit);
+        mOwnerNameEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(b) {
+                    ownerTemp = mOwnerNameEdit.getText().toString();
+                    mOwnerNameEdit.getText().clear();
+                } else {
+                    if(TextUtils.isEmpty(mOwnerNameEdit.getText().toString())) {
+                        mOwnerNameEdit.setText(ownerTemp);
+                    }
+                    ownerTemp = mOwnerNameEdit.getText().toString();
+                }
+            }
+        });
+
         mReadMemoryBtn = findViewById(R.id.readMemoryBtn);
         mReadMemoryBtn.setOnClickListener(view ->  {
             if(mNfcTag != null) {
@@ -401,10 +420,8 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
                             mCutoffPeriodEdit.setText(String.valueOf(mMyNFCTag.getCutOffPeriod()));
                             onOffStatus(mMyNFCTag.getOnOffSetting());
                             autoReconnectStatus(mMyNFCTag.getAutoReconnect());
-                            mOwnerNameEdit.getText().clear();
-                            if(data[MyNFCTag.OWNER_NAME] != 0) {
-                                mOwnerNameEdit.setText(mMyNFCTag.getOwnerName());
-                            }
+
+                            mOwnerNameEdit.setText(String.valueOf(mMyNFCTag.getOwnerName()));
                             Toast.makeText(MainActivity.this, "Read successful", Toast.LENGTH_SHORT).show();
                             break;
                         case WRITE_TAG_MEMORY:
@@ -430,10 +447,10 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
     private void buttonStatus(boolean status) {
         if(status) {
             mReadMemoryBtn.setClickable(status);
-            mReadMemoryBtn.setBackgroundTintList(getColorStateList(R.color.button_color_state_enable));
+            mReadMemoryBtn.setBackgroundTintList(getColorStateList(R.color.dark_blue));
             mReadMemoryBtn.setTextColor(getResources().getColor(R.color.white));
             mWriteMemoryBtn.setClickable(status);
-            mWriteMemoryBtn.setBackgroundTintList(getColorStateList(R.color.button_color_state_enable));
+            mWriteMemoryBtn.setBackgroundTintList(getColorStateList(R.color.dark_blue));
             mWriteMemoryBtn.setTextColor(getResources().getColor(R.color.white));
         } else {
             mReadMemoryBtn.setClickable(status);

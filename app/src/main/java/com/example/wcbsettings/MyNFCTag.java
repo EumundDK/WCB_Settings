@@ -1,6 +1,9 @@
 package com.example.wcbsettings;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 public class MyNFCTag {
 
@@ -108,12 +111,25 @@ public class MyNFCTag {
         onOffSetting = (rawData[AUTO_ONOFF_SETTING] & 0x01);
         autoReconnect = (rawData[AUTO_ONOFF_SETTING] & 0x02);
         randomStart = (rawData[RANDOM_START] & 0xFF);
-        System.arraycopy(ownerNameRaw, 0, rawData, OWNER_NAME, ownerNameRaw.length);
+
+/*        for (int i = OWNER_NAME; i < OWNER_NAME + ownerNameRaw.length; i++) {
+            if(rawData[i] != 0) {
+                ownerNameRaw[i - OWNER_NAME] = rawData[i];
+            }
+        }*/
+        System.arraycopy(rawData, OWNER_NAME, ownerNameRaw, 0, ownerNameRaw.length);
+//        System.arraycopy(ownerNameRaw, 0, rawData, OWNER_NAME, ownerNameRaw.length);
         ownerName = new String(ownerNameRaw, StandardCharsets.UTF_8);
     }
 
     public byte[] getData() {
-        ownerNameRaw = StandardCharsets.US_ASCII.encode(ownerName).array();
+        byte[] mOwnerName = new byte[OWNER_LENGTH];
+        mOwnerName = ownerName.getBytes(StandardCharsets.US_ASCII);
+        for (int i = 0; i < OWNER_LENGTH; i++){
+            ownerNameRaw[i] = 0;
+        }
+
+        System.arraycopy(mOwnerName, 0, ownerNameRaw, 0, mOwnerName.length);
 
         if(currentSetting < 256) {
             rawData[CURRENT_SETTING] = (byte) currentSetting;
@@ -132,8 +148,10 @@ public class MyNFCTag {
         }
         rawData[AUTO_ONOFF_SETTING] = (byte) (onOffSetting + autoReconnect);
         rawData[RANDOM_START] = (byte) randomStart;
-        System.arraycopy(ownerNameRaw, 0, rawData, OWNER_NAME, ownerNameRaw.length);
 
+        System.arraycopy(ownerNameRaw, 0, rawData, OWNER_NAME, ownerNameRaw.length);
+//        System.arraycopy(rawData, OWNER_NAME, ownerNameRaw, OWNER_LENGTH, ownerNameRaw.length);
+//        ownerName = new String(ownerNameRaw, StandardCharsets.UTF_8);
 
 
         return rawData;

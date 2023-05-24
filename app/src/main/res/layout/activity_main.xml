@@ -32,17 +32,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/uidLayout"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             android:stretchColumns="3">
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:id="@+id/currentSettingText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Current Setting"
+                    android:textStyle="bold"
                     android:textSize="20sp"
                     android:layout_column="1"/>
 
@@ -75,13 +81,15 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:id="@+id/tagIdText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Tag ID"
+                    android:textStyle="bold"
                     android:textSize="20sp"
                     android:layout_column="1"/>
 
@@ -114,7 +122,8 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:id="@+id/cutOffPeriodText"
@@ -122,6 +131,7 @@
                     android:layout_height="wrap_content"
                     android:layout_column="1"
                     android:text="Cut-off Period"
+                    android:textStyle="bold"
                     android:textSize="20sp" />
 
                 <TextView
@@ -153,15 +163,18 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp">
 
                 <TextView
                     android:id="@+id/onOffSettingText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="On/Off Setting"
+                    android:textStyle="bold"
                     android:textSize="20sp"
-                    android:layout_column="1"/>
+                    android:layout_column="1" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -174,6 +187,7 @@
                     android:id="@+id/onOffSwitch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
                     android:layout_gravity="start"
                     android:textOn="1"
                     android:textOff="0"
@@ -184,27 +198,33 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp">
 
                 <TextView
                     android:id="@+id/autoReconnectText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_column="1"
                     android:text="Auto-Reconnect"
+                    android:textStyle="bold"
                     android:textSize="20sp"
-                    android:layout_column="1"/>
+                    android:layout_gravity="center_vertical"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=":"
                     android:textSize="20sp"
-                    android:layout_column="2"/>
+                    android:layout_column="2"
+                    android:layout_gravity="center_vertical"/>
 
                 <Switch
                     android:id="@+id/autoReconnectSwitch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
                     android:layout_gravity="start"
                     android:textOn="1"
                     android:textOff="0"
@@ -215,13 +235,15 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:id="@+id/randomStartText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Random Start"
+                    android:textStyle="bold"
                     android:textSize="20sp"
                     android:layout_column="1"/>
 
@@ -236,6 +258,7 @@
                     android:id="@+id/randomStartSwitch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
                     android:layout_gravity="start"
                     android:textOn="1"
                     android:textOff="0"
@@ -246,13 +269,16 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp">
 
                 <TextView
                     android:id="@+id/ownerNameText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Owner"
+                    android:textStyle="bold"
                     android:textSize="20sp"
                     android:layout_column="1"/>
 
@@ -287,17 +313,41 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/grey"
-                android:text="READ"/>
+                android:text="READ"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"/>
 
             <Button
                 android:id="@+id/writeMemoryBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/grey"
-                android:text="WRITE" />
+                android:text="WRITE"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp" />
 
         </LinearLayout>
 
-    </LinearLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="8mm"
+                android:layout_height="8mm"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/ic_baseline_circle_red_12"
+                android:onClick="exitApp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.98"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/ic_baseline_power_settings_new_16" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
 
 </RelativeLayout>
