@@ -13,10 +13,4 @@
         android:orderInCategory="2"
         app:showAsAction="never"/>
 
-    <item
-        android:id="@+id/menu_ehEnable"
-        android:title="Enable EH"
-        android:orderInCategory="3"
-        app:showAsAction="never"/>
-
 </menu>

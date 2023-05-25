@@ -44,10 +44,10 @@
                 android:layout_marginTop="10dp">
 
                 <TextView
-                    android:id="@+id/currentSettingText"
+                    android:id="@+id/currentRatingText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Current Setting"
+                    android:text="Current Rating"
                     android:textStyle="bold"
                     android:textSize="20sp"
                     android:layout_column="1"/>
@@ -60,7 +60,7 @@
                     android:layout_column="2"/>
 
                 <EditText
-                    android:id="@+id/currentSettingEdit"
+                    android:id="@+id/currentRatingEdit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
@@ -69,7 +69,7 @@
                     android:hint="1.0~40.0"/>
 
                 <ImageView
-                    android:id="@+id/currentSettingWarning"
+                    android:id="@+id/currentRatingWarning"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_baseline_warning_amber_red_24"
@@ -126,11 +126,11 @@
                 android:layout_marginTop="10dp">
 
                 <TextView
-                    android:id="@+id/cutOffPeriodText"
+                    android:id="@+id/reconnectPeriodText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="1"
-                    android:text="Cut-off Period"
+                    android:text="Reconnect Period"
                     android:textStyle="bold"
                     android:textSize="20sp" />
 
@@ -142,16 +142,16 @@
                     android:textSize="20sp" />
 
                 <EditText
-                    android:id="@+id/cutOffPeriodEdit"
+                    android:id="@+id/reconnectPeriodEdit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_column="3"
-                    android:hint="20~300"
+                    android:hint="5~300"
                     android:inputType="numberDecimal"
                     android:textSize="20sp"/>
 
                 <ImageView
-                    android:id="@+id/cutOffPeriodWarning"
+                    android:id="@+id/reconnectPeriodWarning"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_baseline_warning_amber_red_24"
@@ -168,10 +168,10 @@
                 android:layout_marginBottom="10dp">
 
                 <TextView
-                    android:id="@+id/onOffSettingText"
+                    android:id="@+id/initialStateText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="On/Off Setting"
+                    android:text="Initial State"
                     android:textStyle="bold"
                     android:textSize="20sp"
                     android:layout_column="1" />
@@ -185,7 +185,7 @@
 
                 <Switch
                     android:id="@+id/onOffSwitch"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_gravity="start"
@@ -207,7 +207,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="1"
-                    android:text="Auto-Reconnect"
+                    android:text="Auto Reconnect"
                     android:textStyle="bold"
                     android:textSize="20sp"
                     android:layout_gravity="center_vertical"/>
