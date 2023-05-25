@@ -7,16 +7,27 @@
     tools:context=".MainActivity">
 
     <LinearLayout
+        android:id="@+id/scanLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="invisible"
-        android:gravity="center">
+        android:gravity="right">
 
         <ImageView
-            android:id="@+id/scanLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/tap_tag3" />
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="8mm"
+            android:layout_height="8mm"
+            android:background="@drawable/ic_baseline_circle_red_12"
+            android:onClick="exitApp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="10dp"
+            app:srcCompat="@drawable/ic_baseline_power_settings_new_16"
+            android:layout_marginEnd="10dp"/>
 
     </LinearLayout>
 
@@ -75,7 +86,7 @@
                     android:src="@drawable/ic_baseline_warning_amber_red_24"
                     android:layout_gravity="center"
                     android:layout_column="4"
-                    android:visibility="invisible"/>
+                    android:visibility="gone"/>
 
             </TableRow>
 
@@ -116,7 +127,7 @@
                     android:src="@drawable/ic_baseline_warning_amber_red_24"
                     android:layout_gravity="center"
                     android:layout_column="4"
-                    android:visibility="invisible"/>
+                    android:visibility="gone"/>
 
             </TableRow>
 
@@ -157,7 +168,7 @@
                     android:src="@drawable/ic_baseline_warning_amber_red_24"
                     android:layout_gravity="center"
                     android:layout_column="4"
-                    android:visibility="invisible"/>
+                    android:visibility="gone"/>
 
             </TableRow>
 
