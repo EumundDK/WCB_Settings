@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.nfc.NfcAdapter;
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
         scanLayout = findViewById(R.id.scanLayout);
 
         mCurrentRatingEdit = (EditText) findViewById(R.id.currentRatingEdit);
-        mCurrentRatingWarning = findViewById(R.id.currentRatingWarning);
+//        mCurrentRatingWarning = findViewById(R.id.currentRatingWarning);
         mCurrentRatingEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
@@ -123,9 +124,9 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
                 }
             }
         });
-        mTagIdWarning = findViewById(R.id.tagIdWarning);
+//        mTagIdWarning = findViewById(R.id.tagIdWarning);
         mReconnectPeriodEdit = (EditText) findViewById(R.id.reconnectPeriodEdit);
-        mReconnectPeriodWarning = findViewById(R.id.reconnectPeriodWarning);
+//        mReconnectPeriodWarning = findViewById(R.id.reconnectPeriodWarning);
         mReconnectPeriodEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
@@ -288,6 +289,9 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
+            case R.id.shut_down:
+                exit();
+                return true;
             case R.id.menu_details:
                 Intent detailsIntent = new Intent(this, DetailsActivity.class);
                 detailsIntent.setAction(Intent.ACTION_DEFAULT);
@@ -299,6 +303,26 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void exit() {
+        // Use the Builder class for convenient dialog construction
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setMessage("Shut Down Apps?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finishAffinity();
+                System.exit(0);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
     }
 
     @Override

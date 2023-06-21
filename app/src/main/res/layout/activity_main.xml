@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/tap_tag3" />
 
-        <ImageButton
+        <!--<ImageButton
             android:id="@+id/imageButton2"
             android:layout_width="8mm"
             android:layout_height="8mm"
@@ -28,31 +28,35 @@
             android:layout_marginBottom="10dp"
             app:srcCompat="@drawable/ic_baseline_power_settings_new_16"
             android:layout_marginEnd="10dp"/>
-
+-->
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/uidLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="visible"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/border_grey_background">
 
         <TableLayout
             android:id="@+id/tagSetting"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/uidLayout"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:stretchColumns="3">
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:stretchColumns="2" >
 
             <TableRow
+                android:id="@+id/tableRow1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp">
+                android:layout_height="match_parent">
 
                 <TextView
                     android:id="@+id/currentRatingText"
@@ -60,40 +64,34 @@
                     android:layout_height="wrap_content"
                     android:text="Current Rating"
                     android:textStyle="bold"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:layout_column="1"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=":"
-                    android:textSize="20sp"
-                    android:layout_column="2"/>
 
                 <EditText
                     android:id="@+id/currentRatingEdit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:layout_column="3"
+                    android:layout_column="2"
+                    android:layout_marginStart="10dp"
+                    android:hint="1.0~40.0"
                     android:inputType="numberDecimal"
-                    android:hint="1.0~40.0"/>
+                    android:textSize="16sp" />
 
-                <ImageView
+                <!--<ImageView
                     android:id="@+id/currentRatingWarning"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_baseline_warning_amber_red_24"
                     android:layout_gravity="center"
                     android:layout_column="4"
-                    android:visibility="gone"/>
+                    android:visibility="gone"/>-->
 
             </TableRow>
 
             <TableRow
+                android:id="@+id/tableRow2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp">
+                android:layout_height="match_parent">
 
                 <TextView
                     android:id="@+id/tagIdText"
@@ -101,40 +99,34 @@
                     android:layout_height="wrap_content"
                     android:text="Tag ID"
                     android:textStyle="bold"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:layout_column="1"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=":"
-                    android:textSize="20sp"
-                    android:layout_column="2"/>
 
                 <EditText
                     android:id="@+id/tagIdEdit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:layout_column="3"
+                    android:textSize="16sp"
+                    android:layout_column="2"
                     android:inputType="numberDecimal"
-                    android:hint="1~100"/>
+                    android:hint="1~100"
+                    android:layout_marginStart="10dp"/>
 
-                <ImageView
+                <!--<ImageView
                     android:id="@+id/tagIdWarning"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_baseline_warning_amber_red_24"
                     android:layout_gravity="center"
                     android:layout_column="4"
-                    android:visibility="gone"/>
+                    android:visibility="gone"/>-->
 
             </TableRow>
 
             <TableRow
+                android:id="@+id/tableRow3"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp">
+                android:layout_height="match_parent">
 
                 <TextView
                     android:id="@+id/reconnectPeriodText"
@@ -143,40 +135,35 @@
                     android:layout_column="1"
                     android:text="Reconnect Period"
                     android:textStyle="bold"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="2"
-                    android:text=":"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
                 <EditText
                     android:id="@+id/reconnectPeriodEdit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_column="3"
+                    android:layout_column="2"
                     android:hint="5~300"
                     android:inputType="numberDecimal"
-                    android:textSize="20sp"/>
+                    android:textSize="16sp"
+                    android:layout_marginStart="10dp"/>
 
-                <ImageView
+                <!--<ImageView
                     android:id="@+id/reconnectPeriodWarning"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_baseline_warning_amber_red_24"
                     android:layout_gravity="center"
                     android:layout_column="4"
-                    android:visibility="gone"/>
+                    android:visibility="gone"/>-->
 
             </TableRow>
 
             <TableRow
+                android:id="@+id/tableRow4"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp">
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp">
 
                 <TextView
                     android:id="@+id/initialStateText"
@@ -184,15 +171,8 @@
                     android:layout_height="wrap_content"
                     android:text="Initial State"
                     android:textStyle="bold"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:layout_column="1" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=":"
-                    android:textSize="20sp"
-                    android:layout_column="2"/>
 
                 <Switch
                     android:id="@+id/onOffSwitch"
@@ -203,15 +183,16 @@
                     android:textOn="1"
                     android:textOff="0"
                     android:showText="true"
-                    android:layout_column="3"/>
+                    android:layout_column="2"/>
 
             </TableRow>
 
             <TableRow
+                android:id="@+id/tableRow5"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp">
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp">
 
                 <TextView
                     android:id="@+id/autoReconnectText"
@@ -220,34 +201,28 @@
                     android:layout_column="1"
                     android:text="Auto Reconnect"
                     android:textStyle="bold"
-                    android:textSize="20sp"
-                    android:layout_gravity="center_vertical"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=":"
-                    android:textSize="20sp"
-                    android:layout_column="2"
+                    android:textSize="18sp"
                     android:layout_gravity="center_vertical"/>
 
                 <Switch
                     android:id="@+id/autoReconnectSwitch"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_gravity="start"
                     android:textOn="1"
                     android:textOff="0"
                     android:showText="true"
-                    android:layout_column="3"/>
+                    android:layout_column="2"/>
 
             </TableRow>
 
             <TableRow
+                android:id="@+id/tableRow6"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp">
 
                 <TextView
                     android:id="@+id/randomStartText"
@@ -255,34 +230,26 @@
                     android:layout_height="wrap_content"
                     android:text="Random Start"
                     android:textStyle="bold"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:layout_column="1"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=":"
-                    android:textSize="20sp"
-                    android:layout_column="2"/>
 
                 <Switch
                     android:id="@+id/randomStartSwitch"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_gravity="start"
                     android:textOn="1"
                     android:textOff="0"
                     android:showText="true"
-                    android:layout_column="3"/>
+                    android:layout_column="2"/>
 
             </TableRow>
 
             <TableRow
+                android:id="@+id/tableRow7"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp">
+                android:layout_height="match_parent">
 
                 <TextView
                     android:id="@+id/ownerNameText"
@@ -290,34 +257,21 @@
                     android:layout_height="wrap_content"
                     android:text="Owner"
                     android:textStyle="bold"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:layout_column="1"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=":"
-                    android:textSize="20sp"
-                    android:layout_column="2"/>
 
                 <EditText
                     android:id="@+id/ownerNameEdit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
+                    android:layout_column="2"
+                    android:layout_marginStart="10dp"
+                    android:hint="MySTAR"
                     android:inputType="text"
                     android:maxLength="16"
-                    android:hint="MySTAR"
-                    android:layout_column="3"/>
+                    android:textSize="16sp" />
 
             </TableRow>
-        </TableLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tagSetting"
-            android:orientation="vertical">
 
             <Button
                 android:id="@+id/readMemoryBtn"
@@ -325,22 +279,28 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/grey"
                 android:text="READ"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"/>
+                android:layout_marginTop="20dp"/>
 
             <Button
                 android:id="@+id/writeMemoryBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/grey"
-                android:text="WRITE"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp" />
+                android:text="WRITE"/>
 
-        </LinearLayout>
+        </TableLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <!--<LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tagSetting"
+            android:orientation="vertical">
+
+
+
+        </LinearLayout>-->
+
+        <!--<androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -357,7 +317,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:srcCompat="@drawable/ic_baseline_power_settings_new_16" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
         </LinearLayout>
 

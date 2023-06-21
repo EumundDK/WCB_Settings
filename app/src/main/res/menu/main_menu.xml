@@ -13,4 +13,11 @@
         android:orderInCategory="2"
         app:showAsAction="never"/>
 
+    <item
+        android:id="@+id/shut_down"
+        android:title="@string/shut_down"
+        android:orderInCategory="3"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_shut_down_24dp"/>
+
 </menu>

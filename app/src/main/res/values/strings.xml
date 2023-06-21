@@ -4,4 +4,5 @@
     <string name="error_during_password_presentation">Error During Password Presentation</string>
     <string name="no_response_received">No Response Received</string>
     <string name="tag_not_in_the_field">Tag Not In The Field</string>
+    <string name="shut_down">Shut Down</string>
 </resources>

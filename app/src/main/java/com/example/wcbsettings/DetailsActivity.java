@@ -187,6 +187,9 @@ public class DetailsActivity extends AppCompatActivity implements TagDiscovery.o
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
+            case R.id.shut_down:
+                exit();
+                return true;
             case R.id.menu_eeprom:
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.setAction(Intent.ACTION_DEFAULT);
@@ -197,6 +200,26 @@ public class DetailsActivity extends AppCompatActivity implements TagDiscovery.o
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void exit() {
+        // Use the Builder class for convenient dialog construction
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setMessage("Shut Down Apps?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finishAffinity();
+                System.exit(0);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
     }
 
     @Override
