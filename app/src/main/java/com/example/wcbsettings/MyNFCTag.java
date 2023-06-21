@@ -4,6 +4,10 @@ import java.nio.charset.StandardCharsets;
 
 public class MyNFCTag {
 
+    public static int INITIAL_STATE_BIT = 1;
+    public static int AUTO_RECONNECT_BIT = 2;
+    public static int RANDOM_START_BIT = 4;
+
     static final int CURRENT_RATING = 0;
     static final int TAG_ID = 2;
     static final int RECONNECT_PERIOD = 4;
@@ -104,9 +108,9 @@ public class MyNFCTag {
         currentRating = ((rawData[CURRENT_RATING] & 0xFF) + ((rawData[CURRENT_RATING+1] & 0xFF) * 256));
         tagId = (rawData[TAG_ID] & 0xFF) + ((rawData[TAG_ID+1] & 0xFF) * 256);
         reconnectPeriod = (rawData[RECONNECT_PERIOD] & 0xFF) + ((rawData[RECONNECT_PERIOD +1] & 0xFF) * 256);
-        initialState = (rawData[SETTINGS] & 0x01);
-        autoReconnect = (rawData[SETTINGS] & 0x02);
-        randomStart = (rawData[SETTINGS] & 0x03);
+        initialState = (rawData[SETTINGS] & INITIAL_STATE_BIT);
+        autoReconnect = (rawData[SETTINGS] & AUTO_RECONNECT_BIT);
+        randomStart = (rawData[SETTINGS] & RANDOM_START_BIT);
         ownerName = new String(ownerNameRaw, StandardCharsets.UTF_8);
     }
 

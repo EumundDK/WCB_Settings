@@ -30,6 +30,7 @@ import com.st.st25sdk.STException;
 import com.st.st25sdk.TagHelper;
 import com.st.st25sdk.type5.st25dv.ST25DVTag;
 
+import static com.example.wcbsettings.MyNFCTag.*;
 import static com.example.wcbsettings.TagDiscovery.TAG;
 
 public class MainActivity extends AppCompatActivity implements TagDiscovery.onTagDiscoveryCompletedListener{
@@ -39,12 +40,9 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
     private MyNFCTag mMyNFCTag;
 
     private EditText mCurrentRatingEdit;
-    private ImageView mCurrentRatingWarning;
-
     private EditText mTagIdEdit;
-    private ImageView mTagIdWarning;
     private EditText mReconnectPeriodEdit;
-    private ImageView mReconnectPeriodWarning;
+
     private Switch mInitialStateSwitch;
     private Switch mAutoReconnectSwitch;
     private Switch mRandomStartSwitch;
@@ -94,7 +92,6 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
         scanLayout = findViewById(R.id.scanLayout);
 
         mCurrentRatingEdit = (EditText) findViewById(R.id.currentRatingEdit);
-//        mCurrentRatingWarning = findViewById(R.id.currentRatingWarning);
         mCurrentRatingEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
@@ -124,9 +121,7 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
                 }
             }
         });
-//        mTagIdWarning = findViewById(R.id.tagIdWarning);
         mReconnectPeriodEdit = (EditText) findViewById(R.id.reconnectPeriodEdit);
-//        mReconnectPeriodWarning = findViewById(R.id.reconnectPeriodWarning);
         mReconnectPeriodEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
@@ -146,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b){
-                    mMyNFCTag.setInitialState(1);
+                    mMyNFCTag.setInitialState(INITIAL_STATE_BIT);
                 } else {
                     mMyNFCTag.setInitialState(0);
                 }
@@ -158,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b) {
-                    mMyNFCTag.setAutoReconnect(2);
+                    mMyNFCTag.setAutoReconnect(AUTO_RECONNECT_BIT);
                 } else {
                     mMyNFCTag.setAutoReconnect(0);
                 }
@@ -170,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b) {
-                    mMyNFCTag.setRandomStart(1);
+                    mMyNFCTag.setRandomStart(RANDOM_START_BIT);
                 } else {
                     mMyNFCTag.setRandomStart(0);
                 }
@@ -499,7 +494,7 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
     }
 
     private void randomStartStatus(int status) {
-        if(status == 1) {
+        if(status == 4) {
             mRandomStartSwitch.setChecked(true);
         } else {
             mRandomStartSwitch.setChecked(false);
