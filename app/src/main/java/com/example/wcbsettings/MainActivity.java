@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
         mReadMemoryBtn = findViewById(R.id.readMemoryBtn);
         mReadMemoryBtn.setOnClickListener(view ->  {
             if(mNfcTag != null) {
-                clearErrorAlert();
+                //clearErrorAlert();
                 executeAsynchronousAction(Action.READ_TAG_MEMORY);
             } else {
                 buttonStatus(false);
@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
         mWriteMemoryBtn = findViewById(R.id.writeMemoryBtn);
         mWriteMemoryBtn.setOnClickListener(view ->  {
             if(mNfcTag != null) {
-                checkEditTextEmpty();
+                //checkEditTextEmpty();
                 if(mCurrentRatingEdit.length() == 0 || mTagIdEdit.length() == 0 || mReconnectPeriodEdit.length() == 0) {
                     Toast.makeText(MainActivity.this, "There are empty fields", Toast.LENGTH_SHORT).show();
                 } else {
@@ -522,7 +522,7 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
         }
     }
 
-    public void checkEditTextEmpty() {
+    /*public void checkEditTextEmpty() {
         if(mCurrentRatingEdit.length() == 0) {
             mCurrentRatingWarning.setVisibility(View.VISIBLE);
         } else {
@@ -541,12 +541,12 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
             mReconnectPeriodWarning.setVisibility(View.INVISIBLE);
             mMyNFCTag.setReconnectPeriod(Integer.parseInt(mReconnectPeriodEdit.getText().toString()));
         }
-    }
+    }*/
 
-    public void clearErrorAlert() {
+ /*   public void clearErrorAlert() {
         mCurrentRatingWarning.setVisibility(View.INVISIBLE);
         mTagIdWarning.setVisibility(View.INVISIBLE);
         mReconnectPeriodWarning.setVisibility(View.INVISIBLE);
-    }
+    }*/
 
 }
