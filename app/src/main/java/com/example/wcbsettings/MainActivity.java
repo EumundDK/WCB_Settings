@@ -492,7 +492,7 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
     }
 
     private void onOffStatus(int status) {
-        if(status == 1) {
+        if(status == INITIAL_STATE_BIT) {
             mInitialStateSwitch.setChecked(true);
         } else {
             mInitialStateSwitch.setChecked(false);
@@ -500,7 +500,7 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
     }
 
     private void autoReconnectStatus(int status) {
-        if(status == 2) {
+        if(status == AUTO_RECONNECT_BIT) {
             mAutoReconnectSwitch.setChecked(true);
         } else {
             mAutoReconnectSwitch.setChecked(false);
@@ -508,7 +508,7 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
     }
 
     private void randomStartStatus(int status) {
-        if(status == 4) {
+        if(status == RANDOM_START_BIT) {
             mRandomStartSwitch.setChecked(true);
         } else {
             mRandomStartSwitch.setChecked(false);
