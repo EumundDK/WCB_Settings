@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.provider.Settings;
 import android.text.InputFilter;
 import android.util.Log;
 import android.view.Menu;
@@ -195,11 +196,24 @@ public class DetailsActivity extends AppCompatActivity implements TagDiscovery.o
                 intent.setAction(Intent.ACTION_DEFAULT);
                 startActivity(intent);
                 return true;
+            case R.id.nfc:
+                enableNFC();
+                return true;
             case android.R.id.home:
                 onBackPressed();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void enableNFC() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            Intent intent = new Intent(Settings.ACTION_NFC_SETTINGS);
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+            startActivity(intent);
+        }
     }
 
     public void exit() {

@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -64,6 +65,16 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
     static final int EH_MODE = 2;
 
     public void exitApp(View view) { finish();
+    }
+
+    public void enableNFC() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            Intent intent = new Intent(Settings.ACTION_NFC_SETTINGS);
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+            startActivity(intent);
+        }
     }
 
     enum Action {
@@ -295,6 +306,9 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
             case android.R.id.home:
                 uidLayout.setVisibility(View.GONE);
                 scanLayout.setVisibility(View.VISIBLE);
+                return true;
+            case R.id.nfc:
+                enableNFC();
                 return true;
         }
         return super.onOptionsItemSelected(item);

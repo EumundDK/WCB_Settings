@@ -18,17 +18,28 @@
             android:layout_height="wrap_content"
             android:src="@drawable/tap_tag3" />
 
-        <!--<ImageButton
-            android:id="@+id/imageButton2"
-            android:layout_width="8mm"
-            android:layout_height="8mm"
-            android:background="@drawable/ic_baseline_circle_red_12"
-            android:onClick="exitApp"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="10dp"
-            app:srcCompat="@drawable/ic_baseline_power_settings_new_16"
-            android:layout_marginEnd="10dp"/>
--->
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/ic_title_with_background_color">
+
+        <TextView
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tag Settings"
+            android:textStyle="bold|italic|normal"
+            android:textSize="20sp"
+            android:fontFamily="serif"
+            android:textAlignment="center"
+            android:textColor="@color/white"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -39,7 +50,7 @@
         android:visibility="visible"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="65dp"
         android:background="@drawable/border_grey_background">
 
         <TableLayout
@@ -54,41 +65,6 @@
             android:stretchColumns="2" >
 
             <TableRow
-                android:id="@+id/tableRow1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/currentRatingText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Current Rating"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:layout_column="1"/>
-
-                <EditText
-                    android:id="@+id/currentRatingEdit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_column="2"
-                    android:layout_marginStart="10dp"
-                    android:hint="1.0~40.0"
-                    android:inputType="numberDecimal"
-                    android:textSize="16sp" />
-
-                <!--<ImageView
-                    android:id="@+id/currentRatingWarning"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_warning_amber_red_24"
-                    android:layout_gravity="center"
-                    android:layout_column="4"
-                    android:visibility="gone"/>-->
-
-            </TableRow>
-
-            <TableRow
                 android:id="@+id/tableRow2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -97,9 +73,10 @@
                     android:id="@+id/tagIdText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Tag ID"
-                    android:textStyle="bold"
+                    android:text="ID"
+                    android:textStyle="bold|italic"
                     android:textSize="18sp"
+                    android:fontFamily="serif"
                     android:layout_column="1"/>
 
                 <EditText
@@ -124,6 +101,44 @@
             </TableRow>
 
             <TableRow
+                android:id="@+id/tableRow1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/currentRatingText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Current Rating"
+                    android:textStyle="bold|italic"
+                    android:textSize="18sp"
+                    android:fontFamily="serif"
+                    android:layout_column="1"/>
+
+                <EditText
+                    android:id="@+id/currentRatingEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_column="2"
+                    android:layout_marginStart="10dp"
+                    android:hint="1.0~40.0"
+                    android:inputType="numberDecimal"
+                    android:textSize="16sp" />
+
+                <!--<ImageView
+                    android:id="@+id/currentRatingWarning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_warning_amber_red_24"
+                    android:layout_gravity="center"
+                    android:layout_column="4"
+                    android:visibility="gone"/>-->
+
+            </TableRow>
+
+
+
+            <TableRow
                 android:id="@+id/tableRow3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -133,9 +148,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="1"
-                    android:text="Reconnect Period"
-                    android:textStyle="bold"
-                    android:textSize="18sp" />
+                    android:text="Reconnect Delay"
+                    android:textStyle="bold|italic"
+                    android:textSize="18sp"
+                    android:fontFamily="serif" />
 
                 <EditText
                     android:id="@+id/reconnectPeriodEdit"
@@ -169,9 +185,10 @@
                     android:id="@+id/initialStateText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Initial State"
-                    android:textStyle="bold"
+                    android:text="On/Off State"
+                    android:textStyle="bold|italic"
                     android:textSize="18sp"
+                    android:fontFamily="serif"
                     android:layout_column="1" />
 
                 <Switch
@@ -200,8 +217,9 @@
                     android:layout_height="wrap_content"
                     android:layout_column="1"
                     android:text="Auto Reconnect"
-                    android:textStyle="bold"
+                    android:textStyle="bold|italic"
                     android:textSize="18sp"
+                    android:fontFamily="serif"
                     android:layout_gravity="center_vertical"/>
 
                 <Switch
@@ -229,8 +247,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Random Start"
-                    android:textStyle="bold"
+                    android:textStyle="bold|italic"
                     android:textSize="18sp"
+                    android:fontFamily="serif"
                     android:layout_column="1"/>
 
                 <Switch
@@ -255,9 +274,10 @@
                     android:id="@+id/ownerNameText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Owner"
-                    android:textStyle="bold"
+                    android:text="Label"
+                    android:textStyle="bold|italic"
                     android:textSize="18sp"
+                    android:fontFamily="serif"
                     android:layout_column="1"/>
 
                 <EditText
@@ -320,5 +340,34 @@
         </androidx.constraintlayout.widget.ConstraintLayout>-->
 
         </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Please Place your Tag in NFC Field"
+        android:gravity="center"
+        android:textSize="10sp"
+        android:fontFamily="serif"
+        android:background="@drawable/border_with_background"
+        android:textColor="@color/white"
+        android:layout_marginEnd="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginBottom="25dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Do Not Release your Tag if in Read/Write Mode"
+        android:gravity="center"
+        android:textSize="10sp"
+        android:fontFamily="serif"
+        android:background="@drawable/border_with_background"
+        android:backgroundTint="@color/dark_green"
+        android:textColor="@color/white"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginBottom="5dp"/>
 
 </RelativeLayout>
