@@ -4,11 +4,14 @@ import java.nio.charset.StandardCharsets;
 
 public class MyNFCTag {
 
-    static final int CURRENT_SETTING = 0;
+    public static int INITIAL_STATE_BIT = 1;
+    public static int AUTO_RECONNECT_BIT = 2;
+    public static int RANDOM_START_BIT = 4;
+
+    static final int CURRENT_RATING = 0;
     static final int TAG_ID = 2;
-    static final int CUTOFF_PERIOD = 4;
-    static final int AUTO_ONOFF_SETTING = 6;
-    static final int RANDOM_START = 7;
+    static final int RECONNECT_PERIOD = 4;
+    static final int SETTINGS = 6;
     static final int OWNER_NAME = 8;
 
     static final int DATA_START = 0;
@@ -17,11 +20,10 @@ public class MyNFCTag {
 
     byte[] rawData = new byte[DATA_LENGTH];
     byte[] ownerNameRaw = new byte[OWNER_LENGTH];
-    int currentSetting;
+    int currentRating;
     int tagId;
-    int cutOffPeriod;
-    int autoOnOffSetting;
-    int onOffSetting;
+    int reconnectPeriod;
+    int initialState;
     int autoReconnect;
     int randomStart;
     String ownerName;
@@ -36,12 +38,12 @@ public class MyNFCTag {
 
     }
 
-    public int getCurrentSetting() {
-        return currentSetting;
+    public int getCurrentRating() {
+        return currentRating;
     }
 
-    public void setCurrentSetting(int currentSetting) {
-        this.currentSetting = currentSetting;
+    public void setCurrentRating(int currentRating) {
+        this.currentRating = currentRating;
     }
 
     public int getTagId() {
@@ -52,20 +54,20 @@ public class MyNFCTag {
         this.tagId = tagId;
     }
 
-    public int getCutOffPeriod() {
-        return cutOffPeriod;
+    public int getReconnectPeriod() {
+        return reconnectPeriod;
     }
 
-    public void setCutOffPeriod(int cutOffPeriod) {
-        this.cutOffPeriod = cutOffPeriod;
+    public void setReconnectPeriod(int reconnectPeriod) {
+        this.reconnectPeriod = reconnectPeriod;
     }
 
-    public int getOnOffSetting() {
-        return onOffSetting;
+    public int getInitialState() {
+        return initialState;
     }
 
-    public void setOnOffSetting(int onOffSetting) {
-        this.onOffSetting = onOffSetting;
+    public void setInitialState(int initialState) {
+        this.initialState = initialState;
     }
 
     public int getAutoReconnect() {
@@ -100,50 +102,49 @@ public class MyNFCTag {
         this.rawData = rawData;
     }
 
-    public void setData() {
-        currentSetting = ((rawData[CURRENT_SETTING] & 0xFF) + ((rawData[CURRENT_SETTING+1] & 0xFF) * 256));
+    public void readTagData() {
+        System.arraycopy(rawData, OWNER_NAME, ownerNameRaw, 0, ownerNameRaw.length);
+
+        currentRating = ((rawData[CURRENT_RATING] & 0xFF) + ((rawData[CURRENT_RATING+1] & 0xFF) * 256));
         tagId = (rawData[TAG_ID] & 0xFF) + ((rawData[TAG_ID+1] & 0xFF) * 256);
-        cutOffPeriod = (rawData[CUTOFF_PERIOD] & 0xFF) + ((rawData[CUTOFF_PERIOD+1] & 0xFF) * 256);
-        autoOnOffSetting = (rawData[AUTO_ONOFF_SETTING] & 0xFF);
-        onOffSetting = (rawData[AUTO_ONOFF_SETTING] & 0x01);
-        autoReconnect = (rawData[AUTO_ONOFF_SETTING] & 0x02);
-        randomStart = (rawData[RANDOM_START] & 0xFF);
-        System.arraycopy(ownerNameRaw, 0, rawData, OWNER_NAME, ownerNameRaw.length);
+        reconnectPeriod = (rawData[RECONNECT_PERIOD] & 0xFF) + ((rawData[RECONNECT_PERIOD +1] & 0xFF) * 256);
+        initialState = (rawData[SETTINGS] & INITIAL_STATE_BIT);
+        autoReconnect = (rawData[SETTINGS] & AUTO_RECONNECT_BIT);
+        randomStart = (rawData[SETTINGS] & RANDOM_START_BIT);
         ownerName = new String(ownerNameRaw, StandardCharsets.UTF_8);
     }
 
-    public byte[] getData() {
-        ownerNameRaw = StandardCharsets.US_ASCII.encode(ownerName).array();
+    public byte[] writeTagData() {
+        byte[] tempRawData = new byte[DATA_LENGTH];
+        byte[] tempOwnerName = new byte[OWNER_LENGTH];
 
-        if(currentSetting < 256) {
-            rawData[CURRENT_SETTING] = (byte) currentSetting;
-            rawData[CURRENT_SETTING + 1] = 0;
+        if(currentRating < 256) {
+            tempRawData[CURRENT_RATING] = (byte) currentRating;
+            tempRawData[CURRENT_RATING + 1] = 0;
         } else {
-            rawData[CURRENT_SETTING] = (byte) (currentSetting % 256);
-            rawData[CURRENT_SETTING + 1] = (byte) (currentSetting / 256);
+            tempRawData[CURRENT_RATING] = (byte) (currentRating % 256);
+            tempRawData[CURRENT_RATING + 1] = (byte) (currentRating / 256);
         }
-        rawData[TAG_ID] = (byte) tagId;
-        if(cutOffPeriod < 256) {
-            rawData[CUTOFF_PERIOD] = (byte) cutOffPeriod;
-            rawData[CUTOFF_PERIOD + 1] = 0;
+        tempRawData[TAG_ID] = (byte) tagId;
+        if(reconnectPeriod < 256) {
+            tempRawData[RECONNECT_PERIOD] = (byte) reconnectPeriod;
+            tempRawData[RECONNECT_PERIOD + 1] = 0;
         } else {
-            rawData[CUTOFF_PERIOD] = (byte) (cutOffPeriod % 256);
-            rawData[CUTOFF_PERIOD + 1] = (byte) (cutOffPeriod / 256);
+            tempRawData[RECONNECT_PERIOD] = (byte) (reconnectPeriod % 256);
+            tempRawData[RECONNECT_PERIOD + 1] = (byte) (reconnectPeriod / 256);
         }
-        rawData[AUTO_ONOFF_SETTING] = (byte) (onOffSetting + autoReconnect);
-        rawData[RANDOM_START] = (byte) randomStart;
-        System.arraycopy(ownerNameRaw, 0, rawData, OWNER_NAME, ownerNameRaw.length);
+        tempRawData[SETTINGS] = (byte) (initialState + autoReconnect + randomStart);
+        System.arraycopy(ownerName.getBytes(StandardCharsets.US_ASCII), 0, tempOwnerName, 0, ownerName.getBytes(StandardCharsets.US_ASCII).length);
+        System.arraycopy(tempOwnerName, 0, tempRawData, OWNER_NAME, tempOwnerName.length);
 
-
-
-        return rawData;
+        return tempRawData;
     }
 
     public void setCurrentDouble(double currentSetting) {
-        this.currentSetting = (int) (currentSetting * 10.0);
+        this.currentRating = (int) (currentSetting * 10.0);
     }
 
     public double getCurrentDouble() {
-        return (double) currentSetting / 10.0;
+        return (double) currentRating / 10.0;
     }
 }

@@ -9,140 +9,247 @@
     <LinearLayout
         android:id="@+id/uidLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp">
 
-        <TextView
-            android:id="@+id/sellingDateText"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Selling Date:"
-            android:textSize="20sp"
-            android:typeface="serif"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"/>
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/ic_title_with_background_color">
 
-        <EditText
-            android:id="@+id/sellingDateInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="20sp"
-            android:inputType="datetime"
-            android:maxLength="8"
-            android:typeface="serif"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"/>
+            <TextView
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tag Details"
+                android:textStyle="bold|italic|normal"
+                android:textSize="20sp"
+                android:fontFamily="serif"
+                android:textAlignment="center"
+                android:textColor="@color/white"/>
 
-        <TextView
-            android:id="@+id/customerNameText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Customer Name:"
-            android:textSize="20sp"
-            android:typeface="serif"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"/>
+        </LinearLayout>
 
-        <EditText
-            android:id="@+id/customerNameInput"
+        <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="20sp"
-            android:maxLength="16"
-            android:typeface="serif"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"/>
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/border_grey_background"
+            android:stretchColumns="2">
 
-        <TextView
-            android:id="@+id/repairStatusText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Repair Status:"
-            android:textSize="20sp"
-            android:typeface="serif"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"/>
+            <TableRow
+                android:id="@+id/tableRow1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="20dp">
 
-        <EditText
-            android:id="@+id/repairStatusInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="20sp"
-            android:maxLength="16"
-            android:typeface="serif"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"/>
+                <TextView
+                    android:id="@+id/sellingDateText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Selling Date"
+                    android:textStyle="bold|italic"
+                    android:textSize="18sp"
+                    android:fontFamily="serif"
+                    android:layout_column="1"/>
 
-        <TextView
-            android:id="@+id/productionDateText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Production Date:"
-            android:textSize="20sp"
-            android:typeface="serif"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"/>
+                <EditText
+                    android:id="@+id/sellingDateInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="16sp"
+                    android:inputType="datetime"
+                    android:maxLength="8"
+                    android:hint="DDMMYYYY"
+                    android:layout_marginStart="10dp"
+                    android:layout_column="2"/>
+            </TableRow>
 
-        <EditText
-            android:id="@+id/productionDateInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:hint="DDMMYYYY"
-            android:textSize="20sp"
-            android:inputType="datetime"
-            android:maxLength="8"
-            android:typeface="serif"
-            android:clickable="false"
-            android:longClickable="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:enabled="false"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"/>
+            <TableRow
+                android:id="@+id/tableRow2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp">
 
-        <TextView
-            android:id="@+id/distributorNameText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Distributor Name:"
-            android:textSize="20sp"
-            android:typeface="serif"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"/>
+                <TextView
+                    android:id="@+id/customerNameText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Customer Name"
+                    android:textStyle="bold|italic"
+                    android:textSize="18sp"
+                    android:fontFamily="serif"
+                    android:layout_column="1"/>
 
-        <EditText
-            android:id="@+id/distributorNameInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="20sp"
-            android:maxLength="16"
-            android:typeface="serif"
-            android:clickable="false"
-            android:longClickable="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:enabled="false"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"/>
+                <EditText
+                    android:id="@+id/customerNameInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="16sp"
+                    android:inputType="text"
+                    android:maxLength="16"
+                    android:hint="User"
+                    android:layout_marginStart="10dp"
+                    android:layout_column="2"/>
+            </TableRow>
 
-        <Button
-            android:id="@+id/readMemoryBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/grey"
-            android:text="READ MEMORY"/>
-        <Button
-            android:id="@+id/writeMemoryBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/grey"
-            android:text="WRITE MEMORY" />
+            <TableRow
+                android:id="@+id/tableRow3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp">
+
+                <TextView
+                    android:id="@+id/repairStatusText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Repair Status"
+                    android:textStyle="bold|italic"
+                    android:textSize="18sp"
+                    android:fontFamily="serif"
+                    android:layout_column="1"/>
+
+                <EditText
+                    android:id="@+id/repairStatusInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="16sp"
+                    android:inputType="text"
+                    android:maxLength="8"
+                    android:layout_marginStart="10dp"
+                    android:layout_column="2"/>
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp">
+
+                <TextView
+                    android:id="@+id/productionDateText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Production Date"
+                    android:textStyle="bold|italic"
+                    android:textSize="18sp"
+                    android:fontFamily="serif"
+                    android:layout_column="1"/>
+
+                <EditText
+                    android:id="@+id/productionDateInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:hint="DDMMYYYY"
+                    android:textSize="16sp"
+                    android:inputType="datetime"
+                    android:maxLength="8"
+                    android:clickable="false"
+                    android:longClickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:enabled="false"
+                    android:layout_marginStart="10dp"
+                    android:layout_column="2"/>
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp">
+
+                <TextView
+                    android:id="@+id/distributorNameText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Distributor Name"
+                    android:textStyle="bold|italic"
+                    android:textSize="18sp"
+                    android:fontFamily="serif"
+                    android:layout_column="1"/>
+
+                <EditText
+                    android:id="@+id/distributorNameInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="16sp"
+                    android:maxLength="16"
+                    android:clickable="false"
+                    android:longClickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:enabled="false"
+                    android:layout_marginStart="10dp"
+                    android:layout_column="2"/>
+            </TableRow>
+
+            <Button
+                android:id="@+id/readMemoryBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/grey"
+                android:text="READ MEMORY"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"/>
+            <Button
+                android:id="@+id/writeMemoryBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/grey"
+                android:text="WRITE MEMORY"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="20dp"/>
+        </TableLayout>
 
     </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Please Place your Tag in NFC Field"
+        android:gravity="center"
+        android:textSize="10sp"
+        android:fontFamily="serif"
+        android:background="@drawable/border_with_background"
+        android:textColor="@color/white"
+        android:layout_marginEnd="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginBottom="25dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Do Not Release your Tag if in Read/Write Mode"
+        android:gravity="center"
+        android:textSize="10sp"
+        android:fontFamily="serif"
+        android:background="@drawable/border_with_background"
+        android:backgroundTint="@color/dark_green"
+        android:textColor="@color/white"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginBottom="5dp"/>
 
 </RelativeLayout>

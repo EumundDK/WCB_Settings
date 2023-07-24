@@ -10,10 +10,12 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.provider.Settings;
 import android.text.InputFilter;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -65,6 +67,9 @@ public class DetailsActivity extends AppCompatActivity implements TagDiscovery.o
 
     private byte[] mPassword = {0,0,0,0,0,0,0,0};
 
+    public void exitApp(View view) { finish();
+    }
+
 
     enum Action {
         READ_TAG_MEMORY,
@@ -75,7 +80,8 @@ public class DetailsActivity extends AppCompatActivity implements TagDiscovery.o
     enum ActionStatus {
         ACTION_SUCCESSFUL,
         ACTION_FAILED,
-        TAG_NOT_IN_THE_FIELD
+        TAG_NOT_IN_THE_FIELD,
+        WRONG_PASSWORD
     }
 
 
@@ -104,7 +110,7 @@ public class DetailsActivity extends AppCompatActivity implements TagDiscovery.o
         mWriteMemoryBtn = findViewById(R.id.writeMemoryBtn);
         mWriteMemoryBtn.setOnClickListener(view ->  {
             if(mNfcTag != null) {
-                inputPasswordDialog();
+                executeAsynchronousAction(Action.PRESENT_PASSWORD);
             } else {
                 buttonStatus(false);
                 Toast.makeText(this, "Action failed!", Toast.LENGTH_LONG).show();
@@ -145,9 +151,9 @@ public class DetailsActivity extends AppCompatActivity implements TagDiscovery.o
             // Give priority to the current activity when receiving NFC events (over other actvities)
             PendingIntent pendingIntent;
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0 | PendingIntent.FLAG_MUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+                pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), PendingIntent.FLAG_MUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
             } else {
-                pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+                pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), PendingIntent.FLAG_MUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
             }
             IntentFilter[] nfcFilters = null;
             String[][] nfcTechLists = null;
@@ -174,24 +180,60 @@ public class DetailsActivity extends AppCompatActivity implements TagDiscovery.o
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
+        MenuItem menuItem = menu.findItem(R.id.menu_details);
+        menuItem.setVisible(false);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
+            case R.id.shut_down:
+                exit();
+                return true;
             case R.id.menu_eeprom:
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.setAction(Intent.ACTION_DEFAULT);
                 startActivity(intent);
                 return true;
-            case R.id.menu_details:
+            case R.id.nfc:
+                enableNFC();
                 return true;
             case android.R.id.home:
                 onBackPressed();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void enableNFC() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            Intent intent = new Intent(Settings.ACTION_NFC_SETTINGS);
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+            startActivity(intent);
+        }
+    }
+
+    public void exit() {
+        // Use the Builder class for convenient dialog construction
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setMessage("Shut Down Apps?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finishAffinity();
+                System.exit(0);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
     }
 
     @Override
@@ -264,12 +306,11 @@ public class DetailsActivity extends AppCompatActivity implements TagDiscovery.o
                         break;
 
                     case WRITE_TAG_MEMORY:
-                        Arrays.fill(sellingDateByte, (byte) 0xFF);
-                        Arrays.fill(customerNameByte, (byte) 0xFF);
-                        Arrays.fill(repairStatusByte, (byte) 0xFF);
-                        sellingDateByte = StandardCharsets.US_ASCII.encode(mSellingDateEdit.getText().toString()).array();
-                        customerNameByte = StandardCharsets.US_ASCII.encode(mCustomerNameEdit.getText().toString()).array();
-                        repairStatusByte = StandardCharsets.US_ASCII.encode(mRepairStatusEdit.getText().toString()).array();
+                        Arrays.fill(customerNameByte, (byte) 0);
+                        Arrays.fill(repairStatusByte, (byte) 0);
+                        sellingDateByte = mSellingDateEdit.getText().toString().getBytes(StandardCharsets.UTF_8);
+                        System.arraycopy(mCustomerNameEdit.getText().toString().getBytes(StandardCharsets.UTF_8), 0, customerNameByte, 0, mCustomerNameEdit.getText().toString().getBytes(StandardCharsets.UTF_8).length);
+                        System.arraycopy(mRepairStatusEdit.getText().toString().getBytes(StandardCharsets.UTF_8), 0, repairStatusByte, 0, mRepairStatusEdit.getText().toString().getBytes(StandardCharsets.UTF_8).length);
                         if(mST25DVTag.isMailboxEnabled(true)) {
                             mST25DVTag.disableMailbox();
                         }
@@ -294,6 +335,8 @@ public class DetailsActivity extends AppCompatActivity implements TagDiscovery.o
             } catch (STException e) {
                 if (e.getError() == STException.STExceptionCode.TAG_NOT_IN_THE_FIELD) {
                     result = ActionStatus.TAG_NOT_IN_THE_FIELD;
+                } else if (e.getError() == STException.STExceptionCode.WRONG_PASSWORD) {
+                    result = ActionStatus.WRONG_PASSWORD;
                 } else {
                     e.printStackTrace();
                     result = ActionStatus.ACTION_FAILED;
@@ -311,25 +354,25 @@ public class DetailsActivity extends AppCompatActivity implements TagDiscovery.o
                     switch (mAction) {
                         case READ_TAG_MEMORY:
                             mSellingDateEdit.setText(sellingDate);
-                            if(customerNameByte[0] == 0 || customerNameByte[0] == 255) {
+                            if(customerNameByte[0] == 0) {
                                 mCustomerNameEdit.getText().clear();
                             } else {
-                                mCustomerNameEdit.setText(customerName);
+                                mCustomerNameEdit.setText(customerName.trim());
                             }
-                            if(repairStatusByte[0] == 0 || repairStatusByte[0] == 255) {
+                            if(repairStatusByte[0] == 0) {
                                 mRepairStatusEdit.getText().clear();
                             } else {
-                                mRepairStatusEdit.setText(repairStatus);
+                                mRepairStatusEdit.setText(repairStatus.trim());
                             }
-                            if(productionDateByte[0] == 0 || productionDateByte[0] == 255) {
+                            if(productionDateByte[0] == 0) {
                                 mProductionDateEdit.getText().clear();
                             } else {
                                 mProductionDateEdit.setText(productionDate);
                             }
-                            if(distributorNameByte[0] == 0 || distributorNameByte[0] == 255) {
+                            if(distributorNameByte[0] == 0) {
                                 mDistributorNameEdit.getText().clear();
                             } else {
-                                mDistributorNameEdit.setText(distributorName);
+                                mDistributorNameEdit.setText(distributorName.trim());
                             }
                             Toast.makeText(DetailsActivity.this, "Read successful", Toast.LENGTH_LONG).show();
                             break;
@@ -353,6 +396,11 @@ public class DetailsActivity extends AppCompatActivity implements TagDiscovery.o
                     buttonStatus(false);
                     Toast.makeText(DetailsActivity.this, "Tag not in the field!", Toast.LENGTH_LONG).show();
                     break;
+
+                case WRONG_PASSWORD:
+                    inputPasswordDialog();
+                    Toast.makeText(DetailsActivity.this, "Wrong Password", Toast.LENGTH_LONG).show();
+                    break;
             }
 
         }
@@ -361,10 +409,10 @@ public class DetailsActivity extends AppCompatActivity implements TagDiscovery.o
     private void buttonStatus(boolean status) {
         if(status) {
             mReadMemoryBtn.setClickable(status);
-            mReadMemoryBtn.setBackgroundTintList(getColorStateList(R.color.button_color_state_enable));
+            mReadMemoryBtn.setBackgroundTintList(getColorStateList(R.color.dark_blue));
             mReadMemoryBtn.setTextColor(getResources().getColor(R.color.white));
             mWriteMemoryBtn.setClickable(status);
-            mWriteMemoryBtn.setBackgroundTintList(getColorStateList(R.color.button_color_state_enable));
+            mWriteMemoryBtn.setBackgroundTintList(getColorStateList(R.color.dark_blue));
             mWriteMemoryBtn.setTextColor(getResources().getColor(R.color.white));
         } else {
             mReadMemoryBtn.setClickable(status);

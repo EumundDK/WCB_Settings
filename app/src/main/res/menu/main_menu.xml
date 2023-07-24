@@ -3,20 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/menu_eeprom"
-        android:title="EEPROM"
+        android:title="Tag Settings"
         android:orderInCategory="1"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/menu_details"
-        android:title="Details"
+        android:title="Tag Details"
         android:orderInCategory="2"
         app:showAsAction="never"/>
 
     <item
-        android:id="@+id/menu_ehEnable"
-        android:title="Enable EH"
+        android:id="@+id/shut_down"
+        android:title="@string/shut_down"
         android:orderInCategory="3"
-        app:showAsAction="never"/>
+        app:showAsAction="always"
+        android:icon="@drawable/ic_shut_down_24dp"/>
+
+    <item
+        android:id="@+id/nfc"
+        android:title="NFC Setting"
+        android:icon="@drawable/baseline_nfc_24dp"
+        app:showAsAction="always"/>
 
 </menu>

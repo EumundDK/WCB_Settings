@@ -7,13 +7,15 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/wcb_settings"
+        android:icon="@drawable/setting"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WCBSettings">
-        <activity android:name=".MainActivity"
-            android:exported="true">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,7 +25,9 @@
                 <action android:name="android.nfc.action.TAG_DISCOVERED"/>
             </intent-filter>
         </activity>
-        <activity android:name=".DetailsActivity" />
+        <activity
+            android:name=".DetailsActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
