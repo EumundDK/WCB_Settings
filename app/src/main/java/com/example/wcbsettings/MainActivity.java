@@ -2,7 +2,10 @@ package com.example.wcbsettings;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 
+import android.app.ActionBar;
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,18 +15,23 @@ import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Vibrator;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.st.st25sdk.NFCTag;
@@ -61,6 +69,8 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
     private String reconnectPeriodTemp;
     private String ownerTemp;
 
+    private boolean writeMode = false;
+
     static final int RF_CONFIG_PASSWORD = 0;
     static final int EH_MODE = 2;
 
@@ -89,6 +99,26 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
         TAG_NOT_IN_THE_FIELD
     }
 
+    private LinearLayout mHeaderLayout;
+    private TextView mHeader;
+
+    int backgroundLevel = 10000;
+    Handler handler = new Handler();
+
+    Runnable rUpdateLevel = new Runnable() {
+        @Override
+        public void run() {
+            if(backgroundLevel == 0) {
+                writeMode = false;
+                backgroundLevel = 10000;
+                updateNFCStatus();
+            } else {
+                updateLevel();
+                handler.postDelayed(rUpdateLevel, 1000);
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +131,9 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
 
         uidLayout = findViewById(R.id.uidLayout);
         scanLayout = findViewById(R.id.scanLayout);
+
+        mHeaderLayout = (LinearLayout) findViewById(R.id.headerLayout);
+        mHeader = (TextView) findViewById(R.id.header);
 
         mCurrentRatingEdit = (EditText) findViewById(R.id.currentRatingEdit);
         mCurrentRatingEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -201,29 +234,45 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
 
         mReadMemoryBtn = findViewById(R.id.readMemoryBtn);
         mReadMemoryBtn.setOnClickListener(view ->  {
-            if(mNfcTag != null) {
+            writeMode = false;
+            handler.removeCallbacks(rUpdateLevel);
+            backgroundLevel = 10000;
+            mHeader.setText("Reading Tag Mode");
+            mHeader.setBackground(getDrawable(R.drawable.ic_title_with_background_color_green));
+//            if(mNfcTag != null) {
                 //clearErrorAlert();
-                executeAsynchronousAction(Action.READ_TAG_MEMORY);
-            } else {
-                buttonStatus(false);
-                Toast.makeText(this, "Action failed!", Toast.LENGTH_SHORT).show();
-            }
+//                executeAsynchronousAction(Action.READ_TAG_MEMORY);
+//            } else {
+//                buttonStatus(false);
+//                Toast.makeText(this, "Action failed!", Toast.LENGTH_SHORT).show();
+//            }
         });
 
         mWriteMemoryBtn = findViewById(R.id.writeMemoryBtn);
         mWriteMemoryBtn.setOnClickListener(view ->  {
-            if(mNfcTag != null) {
-                //checkEditTextEmpty();
-                if(mCurrentRatingEdit.length() == 0 || mTagIdEdit.length() == 0 || mReconnectPeriodEdit.length() == 0) {
-                    Toast.makeText(MainActivity.this, "There are empty fields", Toast.LENGTH_SHORT).show();
-                } else {
-                    executeAsynchronousAction(Action.WRITE_TAG_MEMORY);
-                }
+            if(writeMode) {
+                handler.removeCallbacks(rUpdateLevel);
+                backgroundLevel = 10000;
             } else {
-                buttonStatus(false);
-                Toast.makeText(this, "Action failed!", Toast.LENGTH_SHORT).show();
+                writeMode = true;
             }
+            updateNFCStatus();
+            handler.post(rUpdateLevel);
+//            if(mNfcTag != null) {
+                //checkEditTextEmpty();
+//                if(mCurrentRatingEdit.length() == 0 || mTagIdEdit.length() == 0 || mReconnectPeriodEdit.length() == 0) {
+//                    Toast.makeText(MainActivity.this, "There are empty fields", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    showWriteTagDialog();
+//                    executeAsynchronousAction(Action.WRITE_TAG_MEMORY);
+//                }
+//            } else {
+//                buttonStatus(false);
+//                Toast.makeText(this, "Action failed!", Toast.LENGTH_SHORT).show();
+//            }
         });
+
+        buttonStatus(true);
 
     }
 
@@ -344,7 +393,7 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
     @Override
     public void onTagDiscoveryCompleted(NFCTag nfcTag, TagHelper.ProductID productId, STException error) {
         if (error != null) {
-            buttonStatus(false);
+//            buttonStatus(false);
             Toast.makeText(getApplication(), "Error while reading the tag: " + error.toString(), Toast.LENGTH_SHORT).show();
             return;
         }
@@ -356,15 +405,21 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
                 uidLayout.setVisibility(View.VISIBLE);
                 scanLayout.setVisibility(View.GONE);
                 executeAsynchronousAction(Action.ENABLE_EH);
-                executeAsynchronousAction(Action.READ_TAG_MEMORY);
-                buttonStatus(true);
+                if(writeMode) {
+                    executeAsynchronousAction(Action.WRITE_TAG_MEMORY);
+                } else {
+                    mHeader.setText("Reading Tag Mode");
+                    mHeader.setBackground(getDrawable(R.drawable.ic_title_with_background_color_green));
+                    executeAsynchronousAction(Action.READ_TAG_MEMORY);
+                }
+//                buttonStatus(true);
             } catch (STException e) {
                 e.printStackTrace();
-                buttonStatus(false);
+//                buttonStatus(false);
 //                Toast.makeText(this, "Discovery successful but failed to read the tag!", Toast.LENGTH_SHORT).show();
             }
         } else {
-            buttonStatus(false);
+//            buttonStatus(false);
             Toast.makeText(this, "Tag discovery failed!", Toast.LENGTH_SHORT).show();
         }
     }
@@ -404,6 +459,10 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
                         break;
 
                     case WRITE_TAG_MEMORY:
+                        if(TextUtils.isEmpty(mCurrentRatingEdit.getText().toString()) || TextUtils.isEmpty(mTagIdEdit.getText().toString()) ||
+                                TextUtils.isEmpty(mReconnectPeriodEdit.getText().toString()) || TextUtils.isEmpty(mOwnerNameEdit.getText().toString())) {
+                        return ActionStatus.ACTION_FAILED;
+                        }
                         mMyNFCTag.setCurrentDouble(Double.parseDouble(mCurrentRatingEdit.getText().toString()));
                         mMyNFCTag.setTagId(Integer.parseInt(mTagIdEdit.getText().toString()));
                         mMyNFCTag.setReconnectPeriod(Integer.parseInt(mReconnectPeriodEdit.getText().toString()));
@@ -441,7 +500,7 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
                 case ACTION_SUCCESSFUL:
                     switch (mAction) {
                         case ENABLE_EH:
-                            Toast.makeText(MainActivity.this, "EH Mode Enabled", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(MainActivity.this, "EH Mode Enabled", Toast.LENGTH_SHORT).show();
                             break;
                         case READ_TAG_MEMORY:
                             data = mMyNFCTag.getRawData();
@@ -455,18 +514,22 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
                             Toast.makeText(MainActivity.this, "Read successful", Toast.LENGTH_SHORT).show();
                             break;
                         case WRITE_TAG_MEMORY:
+                            writeMode = false;
+                            handler.removeCallbacks(rUpdateLevel);
+                            backgroundLevel = 10000;
+                            updateNFCStatus();
                             Toast.makeText(MainActivity.this, "Write successful", Toast.LENGTH_SHORT).show();
                             break;
                     }
                     break;
 
                 case ACTION_FAILED:
-                    buttonStatus(false);
+//                    buttonStatus(false);
                     Toast.makeText(MainActivity.this, "Action failed!", Toast.LENGTH_SHORT).show();
                     break;
 
                 case TAG_NOT_IN_THE_FIELD:
-                    buttonStatus(false);
+//                    buttonStatus(false);
                     Toast.makeText(MainActivity.this, "Tag not in the field!", Toast.LENGTH_SHORT).show();
                     break;
             }
@@ -530,6 +593,47 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
             e.printStackTrace();
         }
     }
+
+    public void updateNFCStatus() {
+        if(writeMode) {
+            mHeader.setText("Writing Tag Mode");
+            mHeader.setBackground(getDrawable(R.drawable.level));
+        } else {
+            mHeader.setBackground(null);
+        }
+    }
+
+    public void updateLevel() {
+        mHeader.getBackground().setLevel(backgroundLevel);
+        backgroundLevel-= 1000;
+    }
+
+//    public void showWriteTagDialog() {
+//        Dialog dialog = new Dialog(this);
+//        dialog.setContentView(R.layout.dialog_fragment_writetag);
+//        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+//                    @Override
+//                    public void onDismiss(DialogInterface dialog) {
+//                        writeMode = false;
+//                    }
+//                });
+//        EditText dialogTagIdEdit = (EditText) dialog.findViewById(R.id.dialogTagIdEdit);
+//        EditText dialogCurrentRatingEdit = (EditText) dialog.findViewById(R.id.dialogCurrentRatingEdit);
+//        EditText dialogReconnectPeriodEdit = (EditText) dialog.findViewById(R.id.dialogReconnectPeriodEdit);
+//        Switch dialogOnOffSwitch = (Switch) dialog.findViewById(R.id.dialogOnOffSwitch);
+//        Switch dialogAutoReconnectSwitch = (Switch) dialog.findViewById(R.id.dialogAutoReconnectSwitch);
+//        Switch dialogRandomStartSwitch = (Switch) dialog.findViewById(R.id.dialogRandomStartSwitch);
+//        EditText dialogOwnerNameEdit = (EditText) dialog.findViewById(R.id.dialogOwnerNameEdit);
+//        dialogTagIdEdit.setText(mTagIdEdit.getText());
+//        dialogCurrentRatingEdit.setText(mCurrentRatingEdit.getText());
+//        dialogReconnectPeriodEdit.setText(mReconnectPeriodEdit.getText());
+//        dialogOnOffSwitch.setChecked(mInitialStateSwitch.isChecked());
+//        dialogAutoReconnectSwitch.setChecked(mAutoReconnectSwitch.isChecked());
+//        dialogRandomStartSwitch.setChecked(mRandomStartSwitch.isChecked());
+//        dialogOwnerNameEdit.setText(mOwnerNameEdit.getText());
+//        writeMode = true;
+//        dialog.show();
+//    }
 
     /*public void checkEditTextEmpty() {
         if(mCurrentRatingEdit.length() == 0) {
