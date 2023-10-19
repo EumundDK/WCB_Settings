@@ -239,13 +239,12 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
             backgroundLevel = 10000;
             mHeader.setText("Reading Tag Mode");
             mHeader.setBackground(getDrawable(R.drawable.ic_title_with_background_color_green));
-//            if(mNfcTag != null) {
-                //clearErrorAlert();
-//                executeAsynchronousAction(Action.READ_TAG_MEMORY);
-//            } else {
-//                buttonStatus(false);
-//                Toast.makeText(this, "Action failed!", Toast.LENGTH_SHORT).show();
-//            }
+            if(mNfcTag != null) {
+//                clearErrorAlert();
+                executeAsynchronousAction(Action.READ_TAG_MEMORY);
+            } else {
+                Toast.makeText(this, "Action failed!", Toast.LENGTH_SHORT).show();
+            }
         });
 
         mWriteMemoryBtn = findViewById(R.id.writeMemoryBtn);
@@ -258,22 +257,18 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
             }
             updateNFCStatus();
             handler.post(rUpdateLevel);
-//            if(mNfcTag != null) {
-                //checkEditTextEmpty();
-//                if(mCurrentRatingEdit.length() == 0 || mTagIdEdit.length() == 0 || mReconnectPeriodEdit.length() == 0) {
-//                    Toast.makeText(MainActivity.this, "There are empty fields", Toast.LENGTH_SHORT).show();
-//                } else {
+            if(mNfcTag != null) {
+//                checkEditTextEmpty();
+                if(mCurrentRatingEdit.length() == 0 || mTagIdEdit.length() == 0 || mReconnectPeriodEdit.length() == 0) {
+                    Toast.makeText(MainActivity.this, "There are empty fields", Toast.LENGTH_SHORT).show();
+                } else {
 //                    showWriteTagDialog();
-//                    executeAsynchronousAction(Action.WRITE_TAG_MEMORY);
-//                }
-//            } else {
-//                buttonStatus(false);
-//                Toast.makeText(this, "Action failed!", Toast.LENGTH_SHORT).show();
-//            }
+                    executeAsynchronousAction(Action.WRITE_TAG_MEMORY);
+                }
+            } else {
+                Toast.makeText(this, "Action failed!", Toast.LENGTH_SHORT).show();
+            }
         });
-
-        buttonStatus(true);
-
     }
 
     @Override
@@ -393,7 +388,6 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
     @Override
     public void onTagDiscoveryCompleted(NFCTag nfcTag, TagHelper.ProductID productId, STException error) {
         if (error != null) {
-//            buttonStatus(false);
             Toast.makeText(getApplication(), "Error while reading the tag: " + error.toString(), Toast.LENGTH_SHORT).show();
             return;
         }
@@ -412,14 +406,11 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
                     mHeader.setBackground(getDrawable(R.drawable.ic_title_with_background_color_green));
                     executeAsynchronousAction(Action.READ_TAG_MEMORY);
                 }
-//                buttonStatus(true);
             } catch (STException e) {
                 e.printStackTrace();
-//                buttonStatus(false);
 //                Toast.makeText(this, "Discovery successful but failed to read the tag!", Toast.LENGTH_SHORT).show();
             }
         } else {
-//            buttonStatus(false);
             Toast.makeText(this, "Tag discovery failed!", Toast.LENGTH_SHORT).show();
         }
     }
@@ -460,7 +451,7 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
 
                     case WRITE_TAG_MEMORY:
                         if(TextUtils.isEmpty(mCurrentRatingEdit.getText().toString()) || TextUtils.isEmpty(mTagIdEdit.getText().toString()) ||
-                                TextUtils.isEmpty(mReconnectPeriodEdit.getText().toString()) || TextUtils.isEmpty(mOwnerNameEdit.getText().toString())) {
+                                TextUtils.isEmpty(mReconnectPeriodEdit.getText().toString())) {
                         return ActionStatus.ACTION_FAILED;
                         }
                         mMyNFCTag.setCurrentDouble(Double.parseDouble(mCurrentRatingEdit.getText().toString()));
@@ -524,34 +515,15 @@ public class MainActivity extends AppCompatActivity implements TagDiscovery.onTa
                     break;
 
                 case ACTION_FAILED:
-//                    buttonStatus(false);
                     Toast.makeText(MainActivity.this, "Action failed!", Toast.LENGTH_SHORT).show();
                     break;
 
                 case TAG_NOT_IN_THE_FIELD:
-//                    buttonStatus(false);
                     Toast.makeText(MainActivity.this, "Tag not in the field!", Toast.LENGTH_SHORT).show();
                     break;
             }
 
         }
-    }
-
-    private void buttonStatus(boolean status) {
-        mReadMemoryBtn.setClickable(status);
-        mWriteMemoryBtn.setClickable(status);
-        if(status) {
-            mReadMemoryBtn.setBackgroundTintList(getColorStateList(R.color.dark_blue));
-            mReadMemoryBtn.setTextColor(getResources().getColor(R.color.white));
-            mWriteMemoryBtn.setBackgroundTintList(getColorStateList(R.color.dark_blue));
-            mWriteMemoryBtn.setTextColor(getResources().getColor(R.color.white));
-        } else {
-            mReadMemoryBtn.setBackgroundTintList(getColorStateList(R.color.button_color_state_disable));
-            mReadMemoryBtn.setTextColor(getResources().getColor(R.color.black));
-            mWriteMemoryBtn.setBackgroundTintList(getColorStateList(R.color.button_color_state_disable));
-            mWriteMemoryBtn.setTextColor(getResources().getColor(R.color.black));
-        }
-
     }
 
     private void onOffStatus(int status) {

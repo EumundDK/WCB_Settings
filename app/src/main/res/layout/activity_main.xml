@@ -298,7 +298,8 @@
                 android:id="@+id/readMemoryBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/grey"
+                android:backgroundTint="@color/dark_blue"
+                android:textColor="@color/white"
                 android:text="READ"
                 android:layout_marginTop="20dp"/>
 
@@ -306,7 +307,8 @@
                 android:id="@+id/writeMemoryBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/grey"
+                android:backgroundTint="@color/dark_blue"
+                android:textColor="@color/white"
                 android:text="WRITE"/>
 
         </TableLayout>
